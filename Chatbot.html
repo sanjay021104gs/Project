@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chatbot</title>
+  <link href=' '>
+<style>
+  body {
+    background-image: url('https://rmd.ac.in/img/slide6.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+  }
+
+  .chatbox {
+    height: 75px;
+    width: 275px;
+    background-attachment: fixed;
+    border-radius: 10px;
+
+  }
+  button.submitBtn {
+    margin-left: 20px;
+    height: 60px;
+    width: 70px;
+    border-radius: 10px;
+    background-color: skyblue;
+    font-size: 20px;
+  }
+
+  button.speak {
+    margin-left: 20px;
+    height: 60px;
+    width: 70px;
+    border-radius: 10px;
+    background-color: skyblue;
+    text-size-adjust:100px;
+    font-size: 20px;
+     
+  }
+</style>
+  <script>
+    // Array of keywords and their corresponding responses
+    var keywords = [
+      { keyword: 'hello', response: 'Hello! How can I assist you today?' },
+      { keyword: 'help', response: 'Sure! I can help you. What do you need assistance with?' },
+      { keyword: 'bye', response: 'Goodbye! Have a great day!' },
+      { keyword: 'redirect', response: 'Sure, redirecting you now...', redirect: 'https://example.com' },
+      {keyword:"online payment" ,redirect: "https://www.iobnet.co.in/iobpay/entry.do?dirlinkmerid=RMDVEL&amp;dirlinkcatcd=EDU&quot"},
+        <!--notes--> 
+      {keyword:"cse notes",redirect: "https://rmd.ac.in/dept/cse/notes.html"},
+      {keyword:"csbs notes",redirect:"https://rmd.ac.in/dept/csbs/notes.html"},
+      {keyword:"ece notes",redirect: "https://rmd.ac.in/dept/ece/notes.html"},
+      {keyword:"eee notes",redirect: "https://rmd.ac.in/dept/eee/notes.html"},
+      {keyword:"aiml notes",redirect:"https://rmd.ac.in/dept/aiml/notes.html"},
+
+
+     <!--about department--> 
+      {keyword:"snh",redirect: "https://rmd.ac.in/dept/snh/index.html"}, 
+      {keyword:"aiml",redirect: "https://rmd.ac.in/dept/aiml/index.html"},
+      {keyword:"csbs",redirect: "https://rmd.ac.in/dept/csbs/index.html"},
+      {keyword:"it",redirect: "https://rmd.ac.in/dept/it/index.html"},
+      {keyword:"ece",redirect: "https://rmd.ac.in/dept/ece/index.html"},
+      {keyword:"eee",redirect: "https://rmd.ac.in/dept/eee/index.html"},
+      {keyword:"cse",redirect: "https://rmd.ac.in/dept/cse/index.html"},
+    <!--snh--> 
+      {keyword:"snh hod" ,redirect:"https://rmd.ac.in/dept/snh/hod.html"},
+      {keyword:"v tamil selvi",redirect:"https://rmd.ac.in/dept/snh/faculty.html"},
+      {keyword:"p venkata mohan reddy",redirect:"https://rmd.ac.in/dept/snh/faculty.html"},
+      {keyword:"s saravanan",redirect:"https://rmd.ac.in/dept/snh/faculty.html"},
+      {keyword:"k sumathy",redirect:"https://rmd.ac.in/dept/snh/faculty.html"},
+      {keyword:"s rajakumari",redirect:"https://rmd.ac.in/dept/snh/faculty.html"},
+      {keyword:"v choudri",redirect:"https://rmd.ac.in/dept/snh/faculty.html"},
+      {keyword:"t venkatesan",redirect:"https://rmd.ac.in/dept/snh/faculty.html"},
+      {keyword:"m suresh",redirect:"https://rmd.ac.in/dept/snh/faculty.html"},
+      {keyword:"g ganapathy",redirect:"https://rmd.ac.in/dept/snh/faculty.html"},
+      {keyword:"a jyothi bala",redirect:"https://rmd.ac.in/dept/snh/faculty.html"},
+      {keyword:"s sathish kumar",redirect:"https://rmd.ac.in/dept/snh/faculty.html"},
+      {keyword:"n prabaharan",redirect:"https://rmd.ac.in/dept/snh/faculty.html"},
+
+      <!--physics--> 
+      {keyword:"r priya",redirect:"https://rmd.ac.in/dept/snh/faculty.html"},
+      {keyword:"k amudha",redirect:"https://rmd.ac.in/dept/snh/faculty.html"},
+      {keyword:"s shalini",redirect:"https://rmd.ac.in/dept/snh/faculty.html"},
+      {keyword:"r ranjani",redirect:"https://rmd.ac.in/dept/snh/faculty.html"},
+
+
+      <!--chemistry--> 
+      {keyword:"k s radha",redirect:"https://rmd.ac.in/dept/snh/faculty.html"},
+      {keyword:"s rekha",redirect:"https://rmd.ac.in/dept/snh/faculty.html"},
+      {keyword:"v subha",redirect:"https://rmd.ac.in/dept/snh/faculty.html"},
+      {keyword:"p kamalarajan",redirect:"https://rmd.ac.in/dept/snh/faculty.html"},
+      {keyword:"s ramesh",redirect:"https://rmd.ac.in/dept/snh/faculty.html"},
+
+    <!--english-->
+      {keyword:"g gayathiri devi",redirect:"https://rmd.ac.in/dept/snh/faculty.html"},
+      {keyword:"m v vani",redirect:"https://rmd.ac.in/dept/snh/faculty.html"},
+      {keyword:"m g meedphin arasi",redirect:"https://rmd.ac.in/dept/snh/faculty.html"},
+
+    <!--general engineering-->
+      {keyword:"t a sundaravadivel",redirect:"https://rmd.ac.in/dept/snh/faculty.html"},
+      {keyword:"r ashok kumar",redirect:"https://rmd.ac.in/dept/snh/faculty.html"},
+      {keyword:"g arul jothi",redirect:"https://rmd.ac.in/dept/snh/faculty.html"},
+      {keyword:"m nanda kumar",redirect:"https://rmd.ac.in/dept/snh/faculty.html"},
+      {keyword:"u nagabalan",redirect:"https://rmd.ac.in/dept/snh/faculty.html"},
+      {keyword:"p rajeswari",redirect:"https://rmd.ac.in/dept/snh/faculty.html"},
+
+
+    <!--general facilites-->
+        {keyword:"general facilities",redirect: "https://rmd.ac.in/campus/facilities.html"},
+        {keyword:"campus",redirect:"https://rmd.ac.in/campus/greencampus.html"},
+        {keyword:"buildings" ,redirect: "https://rmd.ac.in/building.html"},
+        {keyword:"computer centre" ,redirect: "https://rmd.ac.in/computercenter/index.html"},
+        {keyword:"central library" ,redirect: "https://rmd.ac.in/library/index.html"},
+        {keyword:"sports",redirect: "https://rmd.ac.in/sports/index.html"},
+        {keyword:"hostel",redirect: "https://rmd.ac.in/campus/hostel.html"},
+        {keyword:"transport",redirect: "https://rmd.ac.in/campus/transport.html"},
+        {keyword:"hospital",redirect: "https://rmd.ac.in/campus/hospital.html"},
+        {keyword:"gym",redirect: "https://rmd.ac.in/campus/gym.html"},
+        {keyword:"beauty parlour",redirect: "https://rmd.ac.in/campus/beauty.html"},
+
+    
+    <!--academics-->
+      {keyword:"regulations",redirect:"https://rmd.ac.in/academics/Regulation.html"},
+      {keyword:"syllabus",redirect:"https://rmd.ac.in/academics/Curriculum.html"},
+      {keyword:"courses offered",redirect:"https://rmd.ac.in/academics/Courses_Offered.html"},
+      {keyword:"academic schedule",redirect:"https://rmd.ac.in/academics/Academic_Schedule.html"},
+      {keyword:"code of conduct",redirect:"https://rmd.ac.in/academics/Code_of_conduct.html"},
+
+    <!--about us-->
+    {keyword:"rmk group of institutions" ,redirect:"https://rmd.ac.in/aboutus/rmkgroup.html"},
+    {keyword:"mission",redirect:"https://rmd.ac.in/aboutus/vision.html"},
+    {keyword:"academic programs",redirect:"https://rmd.ac.in/aboutus/academicprog.html"},
+    {keyword:"approvals",redirect:"https://rmd.ac.in/aboutus/approvals.html"},
+    {keyword:"eligibility",redirect:"https://rmd.ac.in/aboutus/eligibility.html"},
+    {keyword:"general conditions",redirect:"https://rmd.ac.in/aboutus/generalconditions.html"},
+    {keyword:"scholarship",redirect:"https://rmd.ac.in/aboutus/scholarships.html"},
+    {keyword:"guest",redirect:"https://rmd.ac.in/aboutus/guest.html"},
+
+    <!--administration-->
+    {keyword:"chairman" ,redirect: "https://rmd.ac.in/administration/chairman.html"},
+    {keyword:"vice chairman" ,redirect: "https://rmd.ac.in/administration/vc.html"},
+    {keyword:"management",redirect : "https://rmd.ac.in/administration/managementteam.html"},
+    {keyword:"governing board" ,redirect: "https://rmd.ac.in/administration/governig.html"},
+    {keyword:"principal" ,redirect: "https://rmd.ac.in/administration/principal.html"},
+    {keyword:"dean",redirect : "https://rmd.ac.in/administration/deanresearch.html"},
+    {keyword:"organogram" ,redirect: "https://rmd.ac.in/administration/Organogram.html"},
+
+     <!--csbs-->
+    {keyword:"csbs hod" ,redirect: "https://rmd.ac.in/dept/csbs/hod.html"},
+    {keyword:"s muthusundari" ,redirect: "https://rmd.ac.in/dept/csbs/faculty.html"},
+    {keyword:"c h srilakshmi" ,redirect: "https://rmd.ac.in/dept/csbs/faculty.html"},
+    {keyword:"r monica lakshmi" ,redirect: "https://rmd.ac.in/dept/csbs/faculty.html"},
+    {keyword:"a k jaithunbi" ,redirect: "https://rmd.ac.in/dept/csbs/faculty.html"},
+    {keyword:"k sudha" ,redirect: "https://rmd.ac.in/dept/csbs/faculty.html"},
+    {keyword:"n muthuviravan pillai" ,redirect: "https://rmd.ac.in/dept/csbs/faculty.html"},
+    {keyword:"anitha rajathi" ,redirect: "https://rmd.ac.in/dept/csbs/faculty.html"},
+    {keyword:"s deepa" ,redirect: "https://rmd.ac.in/dept/csbs/faculty.html"},
+    {keyword:"k sasirekha" ,redirect: "https://rmd.ac.in/dept/csbs/faculty.html"},
+    {keyword:"g amutha" ,redirect: "https://rmd.ac.in/dept/csbs/faculty.html"},
+
+     <!--aiml-->
+    {keyword:"aiml hod" ,redirect: "https://rmd.ac.in/dept/aiml/hod.html"},
+    {keyword:"c s anita" ,redirect: "https://rmd.ac.in/dept/aiml/faculty.html"},
+    {keyword:"d parveena" ,redirect: "https://rmd.ac.in/dept/aiml/faculty.html"},
+    {keyword:"s remya rose" ,redirect: "https://rmd.ac.in/dept/aiml/faculty.html"},
+    {keyword:"n sathish kumar" ,redirect: "https://rmd.ac.in/dept/aiml/faculty.html"},
+    {keyword:"badi alekhya" ,redirect: "https://rmd.ac.in/dept/aiml/faculty.html"},
+    {keyword:"s swetha" ,redirect: "https://rmd.ac.in/dept/aiml/faculty.html"},
+    {keyword:"s karthick murugan" ,redirect: "https://rmd.ac.in/dept/aiml/faculty.html"},
+    
+     <!--it-->
+    {keyword:"it hod" ,redirect: "https://rmd.ac.in/dept/it/hod.html"},
+    {keyword:"k balasubadra" ,redirect: "https://rmd.ac.in/dept/it/faculty.html"},
+    {keyword:"v prasanna srinivasan" ,redirect: "https://rmd.ac.in/dept/it/faculty.html"},
+    {keyword:"r jothilakshmi" ,redirect: "https://rmd.ac.in/dept/it/faculty.html"},
+    {keyword:"b kalpana" ,redirect: "https://rmd.ac.in/dept/it/faculty.html"},
+    {keyword:"k saravanan" ,redirect: "https://rmd.ac.in/dept/it/faculty.html"},
+    {keyword:"m radhika" ,redirect: "https://rmd.ac.in/dept/it/faculty.html"},
+    {keyword:"n abirami" ,redirect: "https://rmd.ac.in/dept/it/faculty.html"},
+    {keyword:"r nikitha" ,redirect: "https://rmd.ac.in/dept/it/faculty.html"},
+    {keyword:"g janani" ,redirect: "https://rmd.ac.in/dept/it/faculty.html"},
+    {keyword:"n arockia rosy" ,redirect: "https://rmd.ac.in/dept/it/faculty.html"},
+    {keyword:"s velmurugan" ,redirect: "https://rmd.ac.in/dept/it/faculty.html"},
+
+<!--cse-->
+{keyword:"cse hod",redirect :"https://rmd.ac.in/dept/cse/hod.html"},
+{keyword:"p ezhumalai" ,redirect : "https://rmd.ac.in/dept/cse/faculty.html"},
+{keyword:"r sasikumar",redirect : "https://rmd.ac.in/dept/cse/faculty.html"},
+{keyword:"s srinivasan" ,redirect : "https://rmd.ac.in/dept/cse/faculty.html"},
+{keyword:"p shobha rani",redirect : "https://rmd.ac.in/dept/cse/faculty.html"},
+{keyword:"p m joe prathap" ,redirect : "https://rmd.ac.in/dept/cse/faculty.html"},
+{keyword:"a gnanasekar" ,redirect: "https://rmd.ac.in/dept/cse/faculty.html"},
+{keyword:"d rajalakshmi" ,redirect: "https://rmd.ac.in/dept/cse/faculty.html"},
+{keyword:"m vedaraj", redirect: "https://rmd.ac.in/dept/cse/faculty.html"},
+{keyword:"s murugesan",redirect : "https://rmd.ac.in/dept/cse/faculty.html"},
+{keyword:"n ramshankar" ,redirect : "https://rmd.ac.in/dept/cse/faculty.html"},
+{keyword:"g nirmala" ,redirect : "https://rmd.ac.in/dept/cse/faculty.html"},
+{keyword:"k mohanasundaram" ,redirect : "https://rmd.ac.in/dept/cse/faculty.html"},
+{keyword:"d vishnu sakthi" ,redirect : "https://rmd.ac.in/dept/cse/faculty.html"},
+{keyword:"d jayakumar" ,redirect : "https://rmd.ac.in/dept/cse/faculty.html"},
+{keyword:"j geetha priya" ,redirect : "https://rmd.ac.in/dept/cse/faculty.html"},
+{keyword:"k balasaranya" ,redirect : "https://rmd.ac.in/dept/cse/faculty.html"},
+{keyword:"k roslin dayana",redirect : "https://rmd.ac.in/dept/cse/faculty.html"},
+{keyword:"a tamilzharasi" ,redirect : "https://rmd.ac.in/dept/cse/faculty.html"},
+{keyword:"k padmapriya" ,redirect : "https://rmd.ac.in/dept/cse/faculty.html"},
+{keyword:"s logesswari" ,redirect: "https://rmd.ac.in/dept/cse/faculty.html"},
+{keyword:"v sharmila" ,redirect : "https://rmd.ac.in/dept/cse/faculty.html"},
+{keyword:"g manisha" , redirect : "https://rmd.ac.in/dept/cse/faculty.html"},
+{keyword:"l sherin beevi" , redirect : "https://rmd.ac.in/dept/cse/faculty.html"},
+{keyword:"j sherine glory" , redirect : "https://rmd.ac.in/dept/cse/faculty.html"},
+{keyword:"e nalina", redirect : "https://rmd.ac.in/dept/cse/faculty.html"},
+{keyword:"s geetha priya", redirect : "https://rmd.ac.in/dept/cse/faculty.html"},
+{keyword:"g.shanker",redirect: "https://rmd.ac.in/dept/cse/faculty.html"},
+{keyword:"m rangini",redirect:"https://rmd.ac.in/dept/cse/faculty.html"},
+{keyword:"d sterlin rani" , redirect : "https://rmd.ac.in/dept/cse/faculty.html"},
+{keyword:"p jagadeesan" , redirect : "https://rmd.ac.in/dept/cse/faculty.html"},
+{keyword:"d m kalai selvi", redirect : "https://rmd.ac.in/dept/cse/faculty.html"},
+{keyword:"s suhasini" , redirect : "https://rmd.ac.in/dept/cse/faculty.html"},
+{keyword:"k e krishna" , redirect : "https://rmd.ac.in/dept/cse/faculty.html"},
+     
+<!--ece-->
+{keyword:"ece hod",redirect : "https://rmd.ac.in/dept/ece/hod.html"},
+{keyword:"k k thyagarajan" ,redirect : "https://rmd.ac.in/dept/ece/faculty.html"},
+{keyword:"k helenprabha" ,redirect : "https://rmd.ac.in/dept/ece/faculty.html"},
+{keyword:"d rukmani devi" ,redirect:"https://rmd.ac.in/dept/ece/faculty.html"},
+{keyword:"a chilambuchelvan" ,redirect:"https://rmd.ac.in/dept/ece/faculty.html"},
+{keyword:"c bennila thangammal",redirect:"https://rmd.ac.in/dept/ece/faculty.html"},
+{keyword:"a sumaiya begum" ,redirect:"https://rmd.ac.in/dept/ece/faculty.html"},
+{keyword:"j jayaudhaya" ,redirect:"https://rmd.ac.in/dept/ece/faculty.html"},
+{keyword:"c shobana nagaeswari" ,redirect:"https://rmd.ac.in/dept/ece/faculty.html"},
+{keyword:"n vini antony grace" ,redirect:"https://rmd.ac.in/dept/ece/faculty.html"},
+{keyword:"s g hymlin rose" ,redirect:"https://rmd.ac.in/dept/ece/faculty.html"},
+{keyword:"p poonkuzhali" ,redirect:"https://rmd.ac.in/dept/ece/faculty.html"},
+{keyword:"s.balasubramani" ,redirect:"https://rmd.ac.in/dept/ece/faculty.html"},
+{keyword:"j.sumithra",redirect:"https://rmd.ac.in/dept/ece/faculty.html"},
+{keyword:"r.aarthi" ,redirect :"https://rmd.ac.in/dept/ece/faculty.html"},
+{keyword:"shakunthala" ,redirect:"https://rmd.ac.in/dept/ece/faculty.html"},
+{keyword:"jyothi prasad" ,redirect:"https://rmd.ac.in/dept/ece/faculty.html"},
+{keyword:"p arul" ,redirect:"https://rmd.ac.in/dept/ece/faculty.html"},
+{keyword:"r hemalatha" ,redirect:"https://rmd.ac.in/dept/ece/faculty.html"},
+{keyword:"v kumaravel" ,redirect:"https://rmd.ac.in/dept/ece/faculty.html"},
+{keyword:"b jaiganesh" ,redirect:"https://rmd.ac.in/dept/ece/faculty.html"},
+{keyword:"d bharathi dhasan",redirect:"https://rmd.ac.in/dept/ece/faculty.html"},
+{keyword:"p santhoshini",redirect:"https://rmd.ac.in/dept/ece/faculty.html"},
+{keyword:"v s prabhu" ,redirect:"https://rmd.ac.in/dept/ece/faculty.html"},
+{keyword:"s karuppaiah" ,redirect:"https://rmd.ac.in/dept/ece/faculty.html"},
+{keyword:"j jagan babu" ,redirect:"https://rmd.ac.in/dept/ece/faculty.html"},
+{keyword:"g karthika" ,redirect:"https://rmd.ac.in/dept/ece/faculty.html"},
+{keyword:"s jayanthi" ,redirect:"https://rmd.ac.in/dept/ece/faculty.html"},
+{keyword:"g preethi" ,redirect:"https://rmd.ac.in/dept/ece/faculty.html"},
+{keyword:"g anitha" ,redirect:"https://rmd.ac.in/dept/ece/faculty.html"},
+{keyword:"m ayyesha nasreen" ,redirect: "https://rmd.ac.in/dept/ece/faculty.html"},
+{keyword:"s indumathi" ,redirect: "https://rmd.ac.in/dept/ece/faculty.html"},
+{keyword:"m senthil priya" ,redirect: "https://rmd.ac.in/dept/ece/faculty.html"},
+{keyword:"m amalasweena" ,redirect: "https://rmd.ac.in/dept/ece/faculty.html"},
+
+
+    <!--eie-->
+     {keyword:"g nalinashini" ,redirect:"https://rmd.ac.in/dept/eie/faculty.html"},
+     {keyword:"m aravindan" ,redirect:"https://rmd.ac.in/dept/eie/faculty.html"},
+     {keyword:"p aileen sonia dhas" ,redirect:"https://rmd.ac.in/dept/eie/faculty.html"},
+     {keyword:"l aquiline lydia" ,redirect:"https://rmd.ac.in/dept/eie/faculty.html"},
+
+
+     <!--eee-->
+     {keyword:"p usharani" ,redirect:"https://rmd.ac.in/dept/eee/faculty.html"},
+     {keyword:"j c vinitha" ,redirect:"https://rmd.ac.in/dept/eee/faculty.html"},
+     {keyword:"m uma maheswari" ,redirect:"https://rmd.ac.in/dept/eee/faculty.html"},
+     {keyword:"s karkuzhali" ,redirect:"https://rmd.ac.in/dept/eee/faculty.html"},
+     {keyword:"p priyadharshini" ,redirect:"https://rmd.ac.in/dept/eee/faculty.html"},
+
+      // Add more keywords and responses as needed
+    ];
+
+    // Function to handle user input and generate responses
+    function handleUserInput() {
+      var input = document.getElementById('userInput').value.trim();
+      var chatbox = document.getElementById('chatbox');
+
+      if (input !== '') {
+        var response = getResponse(input);
+
+        if (response.redirect) {
+          window.location.href = response.redirect;
+        } else {
+          displayMessage('user', input);
+          displayMessage('bot', response.response);
+        }
+
+        document.getElementById('userInput').value = '';
+        chatbox.scrollTop = chatbox.scrollHeight;
+      }
+    }
+
+    // Function to handle voice input
+    function handleVoiceInput() {
+      var recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
+      recognition.lang = 'en-US';
+
+      recognition.onstart = function() {
+        console.log('Voice recognition started...');
+      };
+
+      recognition.onresult = function(event) {
+        var transcript = event.results[0][0].transcript;
+        document.getElementById('userInput').value = transcript;
+        handleUserInput();
+      };
+
+      recognition.onerror = function(event) {
+        console.log('Voice recognition error: ' + event.error);
+      };
+
+      recognition.onend = function() {
+        console.log('Voice recognition ended.');
+      };
+
+      recognition.start();
+    }
+
+    // Function to generate a response based on keywords
+    function getResponse(input) {
+      for (var i = 0; i < keywords.length; i++) {
+        var keyword = keywords[i].keyword.toLowerCase();
+        var response = keywords[i].response;
+
+        if (input.toLowerCase().includes(keyword)) {
+          return keywords[i];
+        }
+      }
+
+      // Default response if no keyword matches
+      return { response: "I'm sorry, but I'm not sure how to help with that." };
+    }
+
+    // Function to display a message in the chatbox
+    function displayMessage(sender, message) {
+      var chatbox = document.getElementById('chatbox');
+      var messageElement = document.createElement('div');
+      messageElement.classList.add(sender);
+      messageElement.innerHTML = message;
+      chatbox.appendChild(messageElement);
+    }
+  </script>
+</head>
+<body>
+  <h1></h1>
+  <div class="image"> <img src="https://rmd.ac.in/images/headerlogo.png" alt="This sis my second image."height="150px" /> </div> 
+  <div class="image"> <img src="https://rmd.ac.in/img/slide6.jpg" alt="This sis my second image."height="750px" width="2000px" /> </div> 
+
+
+
+  <!--<div id="chatbox"></div>-->
+
+  <input type="text"id="userInput" class="chatbox" style="font-size: 24px;" placeholder="Type your message..." />
+  <button class ="submitBtn" onclick="handleUserInput()">Send</button>
+
+  <button  class="speak" onclick="handleVoiceInput()">Speak</button>
+    
+
+</body>
+</html>
